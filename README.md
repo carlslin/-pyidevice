@@ -4,11 +4,9 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/pyidevice.svg)](https://pypi.org/project/pyidevice/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://pyidevice.readthedocs.io/)
-[![Tests](https://img.shields.io/badge/tests-196%20passing-brightgreen.svg)](https://github.com/yourusername/pyidevice/actions)
-[![Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen.svg)](https://codecov.io/gh/yourusername/pyidevice)
 [![Code Quality](https://img.shields.io/badge/code%20quality-A-brightgreen.svg)](https://github.com/yourusername/pyidevice)
 
-一个基于 libimobiledevice 的综合性 iOS 设备自动化库，提供了设备管理、UI自动化、并发操作、实时监控等功能。经过全面优化，现在拥有 **196个测试用例** 和 **完整的CLI工具**。
+一个基于 libimobiledevice 的综合性 iOS 设备自动化库，提供了设备管理、UI自动化、并发操作、实时监控等功能。经过全面优化，现在拥有 **完整的CLI工具**。
 
 ## ✨ 功能特性
 
@@ -46,7 +44,6 @@
 ### 🛠️ 开发工具
 - 📝 完善的错误处理和日志记录
 - ⚙️ 灵活的配置管理系统
-- 🧪 完整的测试框架（196个测试用例）
 - 📚 详细的文档和示例
 - 🚀 性能监控和优化
 - 💾 智能缓存系统
@@ -64,206 +61,12 @@
 
 - [IDB快速入门指南](IDB快速入门指南.md) - 基于Facebook官方IDB
 - [uiautomator2 API对比](uiautomator2_API对比.md) - 与uiautomator2 API对齐
-- [WDA编译和使用指南](WDA编译和使用指南.md) - iOS 17-18+ 支持
-- [WDA到IDB迁移指南](WDA到IDB迁移指南.md) - 迁移指南
 - [iOS自动化工具对比分析](iOS自动化工具对比分析.md) - 工具对比
 - [安装指南](docs/installation.md)
 - [快速开始](docs/quickstart.md)
 - [API参考](docs/api/README.md)
 - [示例代码](docs/examples/)
 
-## 🔧 WebDriverAgent (WDA) 编译支持 iOS 17-18+
-
-### 问题说明
-
-facebook-wda 默认版本对 iOS 17+ 系统支持有限，但通过编译最新版本的 WebDriverAgent 可以解决这个问题。
-
-### 🚀 现代化替代方案
-
-除了WDA，还有更好的iOS自动化工具，特别是对iOS 17+的支持：
-
-#### 1. IDB (iOS Device Bridge) ⭐⭐⭐⭐⭐
-- ✅ **原生支持iOS 17+**：完全支持最新iOS版本
-- ✅ **高性能**：比WDA快3-5倍
-- ✅ **现代架构**：Facebook开发，持续维护
-- ✅ **丰富的API**：提供完整的设备控制功能
-
-#### 2. Appium 2.0 ⭐⭐⭐⭐⭐
-- ✅ **iOS 17+完全支持**：官方支持最新iOS版本
-- ✅ **跨平台**：同时支持iOS和Android
-- ✅ **企业级**：被广泛用于企业测试
-- ✅ **社区活跃**：大量文档和社区支持
-
-#### 3. 增强版 facebook-wda
-我们开发了增强版 facebook-wda，专门为 iOS 17-18+ 设备优化：
-
-- ✅ **自动检测iOS版本**：智能识别iOS 17+设备
-- ✅ **兼容性建议**：针对不同iOS版本提供具体建议
-- ✅ **API兼容性**：完全兼容原始facebook-wda
-- ✅ **智能错误处理**：更好的错误处理和重试机制
-
-#### IDB快速使用
-
-```python
-import idb
-
-# 连接到设备
-device = idb.Device(udid="YOUR_DEVICE_UDID")
-
-# 获取设备信息
-info = device.info()
-print(f"设备: {info['name']}, iOS: {info['os_version']}")
-
-# 启动应用
-device.app_launch("com.apple.Health")
-
-# 截图
-screenshot = device.screenshot()
-screenshot.save("screenshot.png")
-
-# 查找并点击元素
-elements = device.find_elements("Button", label="开始使用")
-if elements:
-    device.tap(elements[0].bounds.center)
-```
-
-#### Appium 2.0快速使用
-
-```python
-from appium import webdriver
-from appium.options.ios import XCUITestOptions
-
-# 配置选项
-options = XCUITestOptions()
-options.platform_name = "iOS"
-options.platform_version = "17.0"
-options.device_name = "iPhone 15"
-options.bundle_id = "com.apple.Health"
-
-# 创建驱动
-driver = webdriver.Remote("http://localhost:4723", options=options)
-
-# 查找并点击元素
-button = driver.find_element("xpath", "//XCUIElementTypeButton[@name='开始使用']")
-button.click()
-
-# 截图
-driver.save_screenshot("screenshot.png")
-driver.quit()
-```
-
-#### 增强版facebook-wda使用
-
-```python
-from facebook_wda_enhanced import IOSVersionChecker, EnhancedClient
-
-# 检查iOS版本
-version = "17.0"
-if IOSVersionChecker.is_ios_17_plus(version):
-    print("检测到iOS 17+，建议使用增强版facebook-wda")
-
-# 使用增强版客户端
-client = EnhancedClient('http://localhost:8100')
-client.wait_ready()
-
-# 获取兼容性信息
-compat_info = client.get_compatibility_info()
-print(f"兼容性级别: {compat_info['compatibility_level']}")
-```
-
-#### 测试工具
-
-```bash
-# 测试IDB基本功能
-python3 test_idb_basic.py
-
-# 测试iOS版本检查器
-python3 test_ios_version_checker.py
-
-# 查看详细文档
-cat IDB快速入门指南.md
-cat iOS自动化工具对比分析.md
-```
-
-### 解决方案
-
-#### 1. 使用 Appium 的 WebDriverAgent
-
-推荐使用 Appium 维护的 WebDriverAgent，它对 iOS 17-18+ 有更好的支持：
-
-```bash
-# 克隆 Appium 的 WebDriverAgent
-git clone https://github.com/appium/WebDriverAgent.git
-cd WebDriverAgent
-
-# 安装依赖
-./Scripts/bootstrap.sh
-
-# 使用 Xcode 打开项目
-open WebDriverAgent.xcodeproj
-```
-
-#### 2. 编译和安装步骤
-
-1. **在 Xcode 中配置项目**：
-   - 选择 `WebDriverAgentRunner` target
-   - 设置你的开发者账号和证书
-   - 修改 `Bundle Identifier` 为唯一标识符
-
-2. **编译并安装到设备**：
-   ```bash
-   # 获取设备 UDID
-   UDID=$(idevice_id -l | head -n1)
-   
-   # 编译并安装到设备
-   xcodebuild -project WebDriverAgent.xcodeproj \
-              -scheme WebDriverAgentRunner \
-              -destination "id=$UDID" \
-              test
-   ```
-
-3. **启动 WDA 服务**：
-   ```bash
-   # 在设备上启动 WDA
-   xcodebuild -project WebDriverAgent.xcodeproj \
-              -scheme WebDriverAgentRunner \
-              -destination "id=$UDID" \
-              test-without-building
-   ```
-
-#### 3. 使用 IDB (推荐)
-
-```python
-from pyidevice import IDBAutomator
-
-# 连接到 IDB 服务
-idb = IDBAutomator("your-device-udid")
-if idb.connect():
-    print("✅ 成功连接到 iOS 17+ 设备")
-    
-    # 启动应用
-    idb.app_start("com.apple.Health")
-    
-    # 执行自动化操作
-    element = idb.find_element("Button", label="开始使用")
-    if element:
-        idb.tap_element(element)
-    
-    idb.disconnect()
-```
-
-### 优势
-
-- ✅ **完全支持 iOS 17-18+**：使用最新的 WebDriverAgent 代码
-- ✅ **更好的稳定性**：Appium 团队持续维护和更新
-- ✅ **新功能支持**：支持最新的 iOS 自动化特性
-- ✅ **社区支持**：活跃的社区和文档
-
-### 注意事项
-
-- 需要 Xcode 和有效的开发者账号
-- 首次安装需要信任开发者证书
-- 建议在真机上测试，模拟器可能存在兼容性问题
 
 ## 依赖要求
 
@@ -287,12 +90,12 @@ if idb.connect():
 
 ### UI自动化依赖
 
-1. **WebDriverAgent**（用于UI自动化）
-   - 需要通过Xcode编译并安装到iOS设备上
-   - 推荐使用 [facebook/WebDriverAgent](https://github.com/facebook/WebDriverAgent) 或 [appium/WebDriverAgent](https://github.com/appium/WebDriverAgent)
+1. **IDB (iOS Device Bridge)**（用于UI自动化）
+   - 需要安装 IDB Companion 和 Python 客户端
+   - 推荐使用 [Facebook IDB](https://github.com/facebook/idb)
 
 2. **Python依赖**（通过pip安装时自动安装）
-   - facebook-wda>=1.4.0
+   - fb-idb>=2.0.0
 
 ## 安装 pyidevice
 
@@ -739,21 +542,6 @@ print(f"总操作数: {stats['total_operations']}")
 print(f"平均操作时间: {stats['avg_operation_time']:.3f}秒")
 ```
 
-## 🧪 测试
-
-项目包含 **196个测试用例**，覆盖所有核心功能：
-
-```bash
-# 运行所有测试
-python -m pytest tests/
-
-# 运行特定模块测试
-python -m pytest tests/test_device.py
-
-# 生成测试覆盖率报告
-python -m pytest --cov=pyidevice tests/
-```
-
 ## 🔧 开发
 
 ### 代码质量
@@ -769,10 +557,6 @@ python -m flake8 pyidevice/
 
 # 类型检查
 python -m mypy pyidevice/
-
-# 预提交钩子
-pre-commit install
-pre-commit run --all-files
 ```
 
 ### 贡献指南
@@ -785,10 +569,8 @@ pre-commit run --all-files
 
 ## 📊 项目统计
 
-- **测试用例**: 196个
 - **CLI命令**: 14个
 - **支持模块**: 9个
-- **代码覆盖率**: 95%+
 - **文档完整性**: 100%
 
 ## 🔧 IDB 部署指南

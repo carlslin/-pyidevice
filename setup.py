@@ -41,24 +41,17 @@ setup(
         'pyidevice': ['*.json', '*.yaml', '*.yml'],
     },
     install_requires=[
-        'facebook-wda>=1.4.0',  # 用于UI自动化
+        'fb-idb>=2.0.0',        # 用于UI自动化
         'requests>=2.20.0',     # HTTP请求库
         'psutil>=5.0.0',        # 系统进程管理
     ],
     extras_require={
         'dev': [
-            'pytest>=6.0.0',
-            'pytest-cov>=2.0.0',
             'black>=21.0.0',
             'flake8>=3.8.0',
             'mypy>=0.800',
             'sphinx>=3.0.0',
             'sphinx-rtd-theme>=0.5.0',
-        ],
-        'test': [
-            'pytest>=6.0.0',
-            'pytest-cov>=2.0.0',
-            'pytest-mock>=3.0.0',
         ],
     },
     entry_points={
@@ -84,8 +77,7 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Environment :: Console',
     ],
-    keywords='ios automation testing libimobiledevice wda webdriveragent',
+    keywords='ios automation libimobiledevice idb',
     python_requires='>=3.6',
     zip_safe=False,
-    test_suite='tests',
 )

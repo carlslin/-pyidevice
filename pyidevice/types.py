@@ -45,7 +45,7 @@ TaskCallback = Callable[[str, ...], Any]
 # 配置类型
 ConfigDict = Dict[str, Any]
 TimeoutConfig = Dict[str, int]
-WDAConfig = Dict[str, Union[int, float, str]]
+IDBConfig = Dict[str, Union[int, float, str]]
 ConcurrentConfig = Dict[str, Union[int, str]]
 LoggingConfig = Dict[str, Optional[str]]
 PathsConfig = Dict[str, str]

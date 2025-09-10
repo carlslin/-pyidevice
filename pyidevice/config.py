@@ -35,12 +35,12 @@ class Config:
         return {
             "timeouts": {
                 "device_command": 30,  # 设备命令超时时间（秒）
-                "wda_connection": 10,  # WDA连接超时时间（秒）
+                "idb_connection": 10,  # IDB连接超时时间（秒）
                 "screenshot": 15,  # 截图超时时间（秒）
                 "app_launch": 20,  # 应用启动超时时间（秒）
             },
-            "wda": {
-                "default_port": 8100,  # 默认WDA端口
+            "idb": {
+                "default_port": 8080,  # 默认IDB端口
                 "retry_count": 3,  # 连接重试次数
                 "retry_interval": 2.0,  # 重试间隔（秒）
             },
@@ -140,9 +140,9 @@ class Config:
         """获取指定操作的超时时间"""
         return self.get(f"timeouts.{operation}", 30)
 
-    def get_wda_config(self) -> Dict[str, Any]:
-        """获取WDA配置"""
-        return self.get("wda", {})
+    def get_idb_config(self) -> Dict[str, Any]:
+        """获取IDB配置"""
+        return self.get("idb", {})
 
     def get_concurrent_config(self) -> Dict[str, Any]:
         """获取并发配置"""

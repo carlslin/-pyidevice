@@ -14,7 +14,7 @@ authors = [
 maintainers = [
     {name = "pyidevice contributors", email = "pyidevice@example.com"}
 ]
-keywords = ["ios", "automation", "testing", "libimobiledevice", "wda", "webdriveragent"]
+keywords = ["ios", "automation", "libimobiledevice", "idb"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -35,25 +35,18 @@ classifiers = [
 ]
 requires-python = ">=3.6"
 dependencies = [
-    "facebook-wda>=1.4.0",
+    "fb-idb>=2.0.0",
     "requests>=2.20.0",
     "psutil>=5.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=6.0.0",
-    "pytest-cov>=2.0.0",
     "black>=21.0.0",
     "flake8>=3.8.0",
     "mypy>=0.800",
     "sphinx>=3.0.0",
     "sphinx-rtd-theme>=0.5.0",
-]
-test = [
-    "pytest>=6.0.0",
-    "pytest-cov>=2.0.0",
-    "pytest-mock>=3.0.0",
 ]
 
 [project.urls]
@@ -93,27 +86,3 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 ignore_missing_imports = true
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-addopts = [
-    "-v",
-    "--tb=short",
-    "--strict-markers",
-    "--disable-warnings",
-    "--cov=pyidevice",
-    "--cov-report=term-missing",
-    "--cov-report=html:htmlcov",
-    "--cov-report=xml",
-    "--cov-fail-under=80",
-]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "unit: marks tests as unit tests",
-    "requires_device: marks tests that require a physical device",
-    "requires_wda: marks tests that require WebDriverAgent",
-    "skip_ci: marks tests to skip in CI environment",
-]

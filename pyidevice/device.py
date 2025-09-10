@@ -67,16 +67,30 @@ class Device:
         """
         初始化设备对象
 
+        创建一个新的Device实例，用于对指定UDID的iOS设备进行操作。
+        UDID是设备的唯一标识符，用于区分不同的iOS设备。
+
         Args:
             udid (str): 设备的唯一标识符（40位十六进制字符串）
+                       例如："00008020-0012345678901234"
+
+        Attributes:
+            udid (str): 设备的唯一标识符
+            _info_cache (dict): 本地缓存（已弃用，现在使用全局缓存系统）
+            _last_info_update (float): 最后更新时间戳，用于缓存失效判断
 
         Example:
             >>> device = Device("00008020-0012345678901234")
             >>> print(f"设备UDID: {device.udid}")
+            
+        Note:
+            - UDID必须是有效的40位十六进制字符串
+            - 设备必须已连接并信任计算机
+            - 初始化不会验证设备是否真的存在，实际验证在调用方法时进行
         """
-        self.udid = udid  # 设备唯一标识符
+        self.udid = udid  # 设备唯一标识符，用于所有后续操作
         self._info_cache = None  # 本地缓存（已弃用，使用全局缓存）
-        self._last_info_update = 0  # 最后更新时间戳
+        self._last_info_update = 0  # 最后更新时间戳，用于缓存失效判断
 
     @monitor_performance
     def info(self, refresh: bool = False) -> Dict[str, Union[str, int, float, bool]]:

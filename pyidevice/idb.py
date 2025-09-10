@@ -86,20 +86,55 @@ class IDBAutomator:
         """
         初始化IDB自动化控制器
 
+        创建一个新的IDBAutomator实例，用于对指定iOS设备进行UI自动化操作。
+        IDB (iOS Device Bridge) 是Facebook开发的现代化iOS自动化工具，
+        相比传统的WebDriverAgent，具有更好的性能和iOS 17+支持。
+
         Args:
-            udid: 设备UDID
-            host: IDB Companion服务主机地址
-            port: IDB Companion服务端口
+            udid (str): 设备的唯一标识符（40位十六进制字符串）
+                       例如："00008020-0012345678901234"
+            host (str, optional): IDB Companion服务的主机地址。默认为"localhost"。
+                                 如果IDB Companion运行在其他机器上，需要指定IP地址。
+            port (int, optional): IDB Companion服务的端口号。默认为8080。
+                                 确保端口没有被其他服务占用。
+
+        Attributes:
+            udid (str): 设备唯一标识符
+            host (str): IDB Companion服务主机地址
+            port (int): IDB Companion服务端口
+            device (idb.Device): IDB设备对象，连接后初始化
+            _is_connected (bool): 连接状态标志
+            _companion_process (subprocess.Popen): IDB Companion进程对象
+
+        Raises:
+            IDBError: 当IDB模块未安装时抛出
+
+        Example:
+            >>> # 连接到本地设备
+            >>> idb = IDBAutomator("00008020-0012345678901234")
+            >>> 
+            >>> # 连接到远程设备
+            >>> idb = IDBAutomator("00008020-0012345678901234", 
+            ...                   host="192.168.1.100", port=8080)
+
+        Note:
+            - 需要先安装IDB Python客户端：pip install fb-idb
+            - 需要在设备上安装并运行IDB Companion服务
+            - 初始化不会自动连接，需要调用connect()方法
         """
+        # 检查IDB模块是否可用
         if not IDB_AVAILABLE:
             raise IDBError("IDB模块未安装，请运行: pip install idb")
             
-        self.udid = udid
-        self.host = host
-        self.port = port
-        self.device = None
-        self._is_connected = False
-        self._companion_process = None
+        # 存储连接参数
+        self.udid = udid  # 设备唯一标识符
+        self.host = host  # IDB Companion服务主机地址
+        self.port = port  # IDB Companion服务端口
+        
+        # 连接状态和设备对象
+        self.device = None  # IDB设备对象，连接后初始化
+        self._is_connected = False  # 连接状态标志
+        self._companion_process = None  # IDB Companion进程对象
 
     def _ensure_idb_companion_installed(self) -> bool:
         """

@@ -1,18 +1,70 @@
 #!/usr/bin/env python3
-import argparse
-import sys
-import json
-import logging
-from .core import DeviceManager
-from .device import Device
+"""
+pyidevice 命令行接口模块
 
-# 配置日志
+这个模块提供了pyidevice库的命令行接口，允许用户通过命令行工具
+对iOS设备进行各种操作，包括设备管理、应用管理、UI自动化等。
+
+主要功能：
+- 设备发现和信息获取
+- 应用安装、卸载、启动
+- 屏幕截图和设备控制
+- 批量操作支持
+- 设备监控和告警
+- IDB UI自动化操作
+
+支持的命令：
+- list: 列出已连接的设备
+- info: 获取设备详细信息
+- install/uninstall: 应用管理
+- apps: 列出已安装的应用
+- screenshot: 截取屏幕截图
+- run: 启动应用
+- reboot/shutdown: 设备控制
+- batch: 批量操作
+- monitor: 设备监控
+- idb: IDB UI自动化操作
+
+使用示例：
+    # 列出设备
+    pyidevice list
+    
+    # 获取设备信息
+    pyidevice info -u YOUR_UDID
+    
+    # 安装应用
+    pyidevice install -u YOUR_UDID app.ipa
+    
+    # 批量截图
+    pyidevice batch screenshot /tmp/screenshots/ --workers 3
+
+依赖：
+- argparse: 命令行参数解析
+- logging: 日志记录
+- json: JSON数据处理
+- pyidevice.core: 设备管理核心功能
+- pyidevice.device: 设备操作功能
+"""
+
+import argparse  # 命令行参数解析
+import sys  # 系统相关功能
+import json  # JSON数据处理
+import logging  # 日志记录
+from .core import DeviceManager  # 设备管理核心功能
+from .device import Device  # 设备操作功能
+
+# 配置日志系统
+# 设置日志级别为INFO，记录所有重要操作
+# 日志格式包含时间戳、模块名、级别和消息
+# 日志文件为pyidevice_cli.log，采用追加模式
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    filename="pyidevice_cli.log",  # 日志文件
-    filemode="a",
+    level=logging.INFO,  # 日志级别：INFO及以上
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # 日志格式
+    filename="pyidevice_cli.log",  # 日志文件路径
+    filemode="a",  # 追加模式，不覆盖现有日志
 )
+
+# 创建CLI专用的日志记录器
 logger = logging.getLogger("pyidevice_cli")
 
 

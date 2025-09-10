@@ -1,13 +1,54 @@
-"""批量操作模块"""
+"""
+pyidevice 批量操作模块
 
-import time
-import logging
-from typing import List, Dict, Any, Optional, Callable, Union
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from dataclasses import dataclass
-from .exceptions import DeviceError
-from .device import Device
+这个模块提供了批量操作iOS设备的功能，支持多设备并行执行任务，
+大大提高工作效率。适用于需要同时对多个设备进行相同操作的场景。
 
+主要功能：
+- 多设备并行操作
+- 批量应用管理（安装、卸载、启动）
+- 批量设备信息获取
+- 批量截图操作
+- 操作结果统计和报告生成
+- 错误处理和重试机制
+
+主要类：
+- BatchOperator: 批量操作器，提供通用的批量操作功能
+- BatchAppManager: 批量应用管理器，专门处理应用相关操作
+- BatchDeviceManager: 批量设备管理器，处理设备信息获取
+- BatchReportGenerator: 批量报告生成器，生成操作结果报告
+
+技术特性：
+- 使用ThreadPoolExecutor实现并发执行
+- 支持自定义并发数和超时时间
+- 提供详细的操作结果和错误信息
+- 支持操作进度监控和统计
+- 完善的异常处理和日志记录
+
+使用示例：
+    >>> from pyidevice import BatchAppManager
+    >>> manager = BatchAppManager(max_workers=3)
+    >>> devices = ["udid1", "udid2", "udid3"]
+    >>> results = manager.install_apps(devices, "app.ipa")
+    >>> for result in results:
+    ...     print(f"设备 {result.udid}: {'成功' if result.success else '失败'}")
+
+依赖：
+- concurrent.futures: 并发执行支持
+- dataclasses: 数据类支持
+- typing: 类型注解支持
+- logging: 日志记录
+"""
+
+import time  # 时间相关功能
+import logging  # 日志记录
+from typing import List, Dict, Any, Optional, Callable, Union  # 类型注解
+from concurrent.futures import ThreadPoolExecutor, as_completed  # 并发执行
+from dataclasses import dataclass  # 数据类
+from .exceptions import DeviceError  # 设备异常
+from .device import Device  # 设备操作类
+
+# 配置日志记录器
 logger = logging.getLogger(__name__)
 
 

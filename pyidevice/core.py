@@ -91,18 +91,23 @@ class DeviceManager:
         """
         try:
             # 执行idevice_id命令获取设备列表
+            # idevice_id是libimobiledevice工具套件的一部分，用于获取设备标识符
             # -l 参数表示列出所有连接的设备
             result = subprocess.check_output(
                 ["idevice_id", "-l"],
-                universal_newlines=True,  # 以文本模式返回结果
-                stderr=subprocess.PIPE,  # 捕获错误输出
-                timeout=10,  # 设置10秒超时
+                universal_newlines=True,  # 以文本模式返回结果，便于处理
+                stderr=subprocess.PIPE,  # 捕获错误输出，用于调试
+                timeout=10,  # 设置10秒超时，避免命令卡死
             )
 
             # 解析命令输出，每行一个UDID
+            # idevice_id命令的输出格式：每行一个40位的十六进制UDID
             devices = result.strip().split("\n")
-            # 过滤掉空行
-            return [d for d in devices if d.strip()]
+            # 过滤掉空行，确保返回的都是有效的UDID
+            valid_devices = [d for d in devices if d.strip()]
+            
+            logger.info(f"发现 {len(valid_devices)} 个已连接的iOS设备")
+            return valid_devices
 
         except subprocess.CalledProcessError as e:
             # 命令执行失败（非零退出码）

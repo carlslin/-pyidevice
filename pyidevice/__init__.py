@@ -62,6 +62,29 @@ from .cache import CacheManager, cache_manager, cached, DeviceCache, device_cach
 from .types import DeviceStatus, ExecutorType, LogLevel
 from .monitor import DeviceMonitor, AlertManager, device_monitor, alert_manager
 from .batch import BatchOperator, BatchAppManager, BatchDeviceManager, BatchReportGenerator
+from .stability import (
+    RetryManager,
+    RetryConfig,
+    RetryStrategy,
+    ConnectionPool,
+    HealthChecker,
+    HealthCheck,
+    CircuitBreaker,
+    TimeoutManager,
+    InputValidator,
+    ResourceManager,
+    get_retry_manager,
+    get_connection_pool,
+    get_health_checker,
+    get_circuit_breaker,
+    get_timeout_manager,
+    get_input_validator,
+    get_resource_manager,
+    with_retry,
+    with_timeout,
+    with_circuit_breaker,
+    validate_input,
+)
 
 # 定义公共API
 __all__ = [
@@ -112,6 +135,28 @@ __all__ = [
     "BatchAppManager",
     "BatchDeviceManager",
     "BatchReportGenerator",
+    # 稳定性增强
+    "RetryManager",
+    "RetryConfig",
+    "RetryStrategy",
+    "ConnectionPool",
+    "HealthChecker",
+    "HealthCheck",
+    "CircuitBreaker",
+    "TimeoutManager",
+    "InputValidator",
+    "ResourceManager",
+    "get_retry_manager",
+    "get_connection_pool",
+    "get_health_checker",
+    "get_circuit_breaker",
+    "get_timeout_manager",
+    "get_input_validator",
+    "get_resource_manager",
+    "with_retry",
+    "with_timeout",
+    "with_circuit_breaker",
+    "validate_input",
     # 异常类
     "PyIDeviceError",
     "DeviceError",

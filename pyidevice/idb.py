@@ -35,6 +35,17 @@ import os
 import re
 import subprocess
 import threading
+from .stability import (
+    get_retry_manager,
+    get_timeout_manager,
+    get_input_validator,
+    get_connection_pool,
+    get_health_checker,
+    get_circuit_breaker,
+    with_retry,
+    with_timeout,
+    validate_input,
+)
 
 # 配置日志记录器
 logger = logging.getLogger(__name__)
@@ -125,6 +136,13 @@ class IDBAutomator:
         # 检查IDB模块是否可用
         if not IDB_AVAILABLE:
             raise IDBError("IDB模块未安装，请运行: pip install idb")
+        
+        # 验证输入参数
+        validator = get_input_validator()
+        if not validator.validate_udid(udid):
+            raise ValueError(f"无效的UDID格式: {udid}")
+        if not validator.validate_port(port):
+            raise ValueError(f"无效的端口号: {port}")
             
         # 存储连接参数
         self.udid = udid  # 设备唯一标识符
@@ -135,6 +153,11 @@ class IDBAutomator:
         self.device = None  # IDB设备对象，连接后初始化
         self._is_connected = False  # 连接状态标志
         self._companion_process = None  # IDB Companion进程对象
+        
+        # 初始化稳定性组件
+        self._retry_manager = get_retry_manager()
+        self._timeout_manager = get_timeout_manager()
+        self._circuit_breaker = get_circuit_breaker()
 
     def _ensure_idb_companion_installed(self) -> bool:
         """

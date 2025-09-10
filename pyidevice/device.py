@@ -34,6 +34,14 @@ import logging
 from typing import Dict, Union
 from .cache import device_cache
 from .performance import monitor_performance
+from .stability import (
+    get_retry_manager,
+    get_timeout_manager,
+    get_input_validator,
+    with_retry,
+    with_timeout,
+    validate_input,
+)
 
 # 配置日志记录器
 logger = logging.getLogger(__name__)
@@ -88,6 +96,11 @@ class Device:
             - 设备必须已连接并信任计算机
             - 初始化不会验证设备是否真的存在，实际验证在调用方法时进行
         """
+        # 验证UDID格式
+        validator = get_input_validator()
+        if not validator.validate_udid(udid):
+            raise ValueError(f"无效的UDID格式: {udid}")
+        
         self.udid = udid  # 设备唯一标识符，用于所有后续操作
         self._info_cache = None  # 本地缓存（已弃用，使用全局缓存）
         self._last_info_update = 0  # 最后更新时间戳，用于缓存失效判断

@@ -33,6 +33,14 @@ from .exceptions import (
     handle_exception,
     retry_on_failure,
 )
+from .stability import (
+    get_retry_manager,
+    get_timeout_manager,
+    get_input_validator,
+    with_retry,
+    with_timeout,
+    validate_input,
+)
 
 # 配置日志记录器
 logger = logging.getLogger(__name__)
@@ -63,7 +71,8 @@ class DeviceManager:
 
     @staticmethod
     @handle_exception
-    @retry_on_failure(max_retries=2, delay=0.5)
+    @with_retry()
+    @with_timeout(15.0)
     def get_devices() -> List[str]:
         """
         获取所有已连接的iOS设备UDID列表

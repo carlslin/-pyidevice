@@ -1,0 +1,11 @@
+# 开发依赖
+pytest>=6.0.0
+pytest-cov>=2.0.0
+pytest-mock>=3.0.0
+black>=21.0.0
+flake8>=3.8.0
+mypy>=0.800
+sphinx>=3.0.0
+sphinx-rtd-theme>=0.5.0
+pre-commit>=2.0.0
+tox>=3.0.0

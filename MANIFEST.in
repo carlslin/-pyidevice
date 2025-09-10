@@ -1,0 +1,35 @@
+# 包含许可证文件
+include LICENSE
+
+# 包含README文件
+include README.md
+
+# 包含配置文件
+include pyproject.toml
+include pytest.ini
+include requirements*.txt
+
+# 包含GitHub工作流
+recursive-include .github *
+
+# 包含示例文件
+recursive-include examples *.py *.md
+
+# 包含测试文件
+recursive-include tests *.py
+
+# 排除不需要的文件
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude .git*
+global-exclude .DS_Store
+global-exclude *.log
+global-exclude .coverage
+global-exclude htmlcov/
+global-exclude .pytest_cache/
+global-exclude .mypy_cache/
+global-exclude dist/
+global-exclude build/
+global-exclude *.egg-info/
